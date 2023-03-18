@@ -14,12 +14,12 @@ export default class CSVCreator {
             const dataString = data.join('\n')
             file.write('Name, Address, Phone\n');
             file.write(dataString)
-            fs.writeFileSync(fileName, dataString, 'utf-8', (err) => {
+            fs.writeFile(fileName, dataString, 'utf-8', (err) => {
                 if (!err) {
                     return true;
                 }
             })
-            
+            fs.clo
         } catch (error) {
             console.error(error);
         }

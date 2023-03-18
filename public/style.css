@@ -1,0 +1,6 @@
+.content {
+  display: table;
+  position: fixed; /* or absolute */
+  top: 50%;
+  left: 25%;
+}
