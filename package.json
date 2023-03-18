@@ -1,0 +1,31 @@
+{
+  "name": "web-scrapper",
+  "version": "1.0.0",
+  "description": "A web scrapper worker for any zabihah website",
+  "main": "server.js",
+  "type": "module",
+  "scripts": {
+    "build": "babel src/ -d lib/",
+    "test": "echo \"Error: no test specified\" && exit 1",
+    "start": "node ./src/server.js --watch",
+    "flow": "flow"
+  },
+  "author": "Khaled Saleh",
+  "license": "MIT",
+  "dependencies": {
+    "axios": "^1.3.4",
+    "body-parser": "^1.20.2",
+    "cheerio": "^1.0.0-rc.12",
+    "express": "^4.18.2"
+  },
+  "devDependencies": {
+    "@babel/cli": "^7.21.0",
+    "@babel/core": "^7.21.3",
+    "@babel/preset-flow": "^7.18.6",
+    "esbuild": "^0.17.12",
+    "esbuild-runner": "^2.2.2",
+    "flow-bin": "^0.202.0",
+    "request": "^2.88.2",
+    "typescript": "^5.0.2"
+  }
+}
