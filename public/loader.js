@@ -25,7 +25,7 @@ function submit() {
             .createObjectURL(new Blob([value]));
         const link = document.createElement('a');
         link.href = downloadUrl;
-        link.setAttribute('download', 'data.csv');
+        link.setAttribute('download', `${city}_${radius}_Mile(s)_data.csv`);
         document
             .body
             .appendChild(link);

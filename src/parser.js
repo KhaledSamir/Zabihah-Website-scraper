@@ -41,16 +41,13 @@ export default class Parser {
     return businessesLinks;
   }
 
-  // for (let i = 0; i < businesses.length; i++) {   const link = await  } return
-  // this.businessesLinks;
-
   async createBiz(bizData) {
     let $ = cheerio.load(bizData);
     const bizName = $('.titleBL').text()
     const address = $('.bodyLink')
       .first()
       .text()
-    const phone = $('.midLink')
+    const phone = $('td[valign="middle"] > div.midLink')
       .first()
       .text();
     let business = new Business(bizName, address, phone)
