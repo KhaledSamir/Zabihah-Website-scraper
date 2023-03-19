@@ -4,7 +4,8 @@ import path from 'path';
 import {fileURLToPath} from 'url';
 import Parser from './parser.js'
 import axios from 'axios';
-import http from 'http'
+import fs from 'fs'
+import * as blob from 'buffer';
 
 const __filename = fileURLToPath(import.meta.url);
 const __dirname = path.dirname(__filename);
@@ -20,25 +21,29 @@ app.get('/', (req, res) => {
 });
 
 app.get('/download', (req, res) => {
-    const filePath = path.join(__dirname, '../public/data.csv');
-    res.setHeader('Content-Type', 'text/csv');
+    const filePath = path.join(__dirname, '../public/data.csv'); //
+    res.setHeader('Content-Type', 'text/csv'); //
     res.setHeader('Content-Disposition', 'attachment;filename=data.csv')
     res
         .status(200)
-        .sendFile(filePath)
-})
+        .download(filePath, 'data.csv')
+});
+
+// res.download(filePath, (err) => {     console.log(err)     }) })
 app.post("/url", async(req, res) => {
     let url = req.body.url;
-    const result = await parser.loadFromUrl(url)
-    if (result) {
-        http.get('http://localhost:3000/download', {
-            method: 'get',
-            headers: {
-                'Accept': 'text/csv',
-                'Content-Type': 'text/csv'
-            }
-        })
-    }
+    const file = await parser.loadFromUrl(url)
+    axios({url: `http://${req.headers.host}/download`, method: 'get', responseType: 'text/csv'}).then((r) => {
+        res.send(r.data)
+        file.destroy();
+    })
+
+    // axios.get(path.join(__dirname, '../public/data.csv')).then(data => {
+    // res.download(data) }); res.download(JSON.stringify(path.join(__dirname,
+    // '../public/data.csv'))) if (result) {     axios({url:
+    // 'http://localhost:3000/download', method: 'get', responseType:
+    // 'blob'}).then((response) => {        // const url = new
+    // blob.Blob([response.data])        // res.File(url) res.send(response.data) })
     // res.send(`Hello from NodeJS!! You sent ${url}`)
 });
 

@@ -8,8 +8,9 @@ export default class Parser {
   csvCreator = new CSVCreator();
   async loadFromUrl(url) {
     const pageResponse = await axios.get(url);
-    await this.getBusinesses(pageResponse.data)
-    return true;
+    const businesses = await this.getBusinesses(pageResponse.data)
+    const file = await this.csvCreator.createCSV(businesses)
+    return file;
   }
 
   async getBusinesses(pageResponse) {
@@ -25,7 +26,8 @@ export default class Parser {
         this.businessesArr.push(business);
     }
 
-    await this.csvCreator.createCSV(this.businessesArr)
+    return this.businessesArr;
+    
   }
 
   async createBiz(bizData) {

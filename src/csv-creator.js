@@ -7,19 +7,17 @@ export default class CSVCreator {
         // this.dirname = path.dirname(this.__filename);
     }
 
-    async createCSV(data) {
+    createCSV(data) {
         try {
             const fileName = 'public/data.csv';
             const file = fs.createWriteStream(fileName)
             const dataString = data.join('\n')
             file.write('Name, Address, Phone\n');
             file.write(dataString)
-            fs.writeFile(fileName, dataString, 'utf-8', (err) => {
-                if (!err) {
-                    return true;
-                }
-            })
-            fs.clo
+            fs.writeFileSync(fileName, dataString, { encoding: 'utf-8'})
+            file.emit('close')
+            file.close();
+            return file
         } catch (error) {
             console.error(error);
         }

@@ -4,3 +4,10 @@
   top: 50%;
   left: 25%;
 }
+
+.spinner {
+  display: table;
+  position: fixed; /* or absolute */
+  top: 50%;
+  right: 23%;
+}
