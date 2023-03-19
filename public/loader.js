@@ -20,6 +20,7 @@ function submit() {
     }).then(data => {
         
         data.text().then(value => {
+            console.log(`value is ${value}`)
             const downloadUrl = window.URL
             .createObjectURL(new Blob([value]));
         const link = document.createElement('a');
