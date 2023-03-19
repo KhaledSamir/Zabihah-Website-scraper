@@ -32,11 +32,13 @@ app.get('/download', (req, res) => {
 // res.download(filePath, (err) => {     console.log(err)     }) })
 app.post("/url", async(req, res) => {
     let url = req.body.url;
-    const file = await parser.loadFromUrl(url)
-    axios({url: `http://${req.headers.host}/download`, method: 'get', responseType: 'text/csv'}).then((r) => {
-        res.send(r.data)
-        file.destroy();
-    })
+    const data = await parser.loadFromUrl(url)
+    // axios({url: `http://${req.headers.host}/download`, method: 'get', responseType: 'text/csv'}).then((r) => {
+    //     res.send(r.data)
+    //     file.destroy();
+    // })
+
+    res.send(data)
 
     // axios.get(path.join(__dirname, '../public/data.csv')).then(data => {
     // res.download(data) }); res.download(JSON.stringify(path.join(__dirname,
