@@ -18,47 +18,77 @@
         <h1>Zabihah scrapper</h1>
       </div>
     </div>
-    <div class="container col-6 content mb-3">
-      <div class="input-group mb-3">
-        <input
-          type="text"
-          id="city-textbox"
-          class="form-control"
-          placeholder="City"
-          aria-label="City"
-          aria-describedby="button-addon2"
-        />
-        <select id="radius-select" name="r" size="1" class="form-select">
-          <option value="1" selected="">Within 1 mi</option>
-          <option value="5">Within 5 mi</option>
-          <option value="10">Within 10 mi</option>
-          <option value="20">Within 20 mi</option>
-        </select>
-        <button
-          onclick="submit()"
-          class="btn btn-primary"
-          type="button"
-          id="submitBtn"
-        >
-          submit
-        </button>
+    <div class="container col-8 content">
+      <div class="row col-12">
+        <div class="input-group mx-3 mb-3">
+          <select
+            id="business-select"
+            name="r"
+            size="1"
+            class="m-5 col-3 form-select"
+          >
+            <option value="r" selected="">Restaurants</option>
+            <option value="m">Markets</option>
+          </select>
+        </div>
       </div>
-      
-    </div>
-    <div class="col">
-      <div
-        class="spinner spinner-border text-light"
-        id="spinner"
-        role="status"
-        hidden="true"
-      >
-        <span class="visually-hidden">Loading...</span>
+      <div class="row">
+        <div class="input-group mb-3">
+          <input
+            type="text"
+            id="city-textbox"
+            class="form-control"
+            placeholder="City"
+            aria-label="City"
+            aria-describedby="button-addon2"
+            onkeyup="enableSubmitBtn()"
+          />
+          <select id="radius-select" name="r" size="1" class="form-select">
+            <option value="1" selected="">Within 1 mi</option>
+            <option value="5">Within 5 mi</option>
+            <option value="10">Within 10 mi</option>
+            <option value="20">Within 20 mi</option>
+          </select>
+
+          <button class="btn btn-primary" onclick="submit()" id="submitBtn" type="button" disabled>
+            <span id="growSpan" hidden="true" class="spinner-grow spinner-grow-sm" role="status" aria-hidden="true"></span>
+            <div id="btnTextDiv" class="d-inline">Submit</div>
+          </button>
+
+          <!-- <input
+            class="btn btn-primary"
+            type="button"
+            onclick="submit()"
+            id="submitBtn"
+            disabled
+            value="Submit"
+          />
+          <div id="btnText">
+            <span
+              id="btnSpan"
+              hidden="true"
+              class="spinner-grow spinner-grow-sm"
+              role="status"
+              aria-hidden="true"
+            ></span>
+          </div> -->
+          <!-- <button
+            onclick="submit()"
+            class="btn btn-primary"
+            type="button"
+            
+          >
+            submit
+          </button> -->
+        </div>
       </div>
     </div>
+
+    <!--  -->
   </body>
   <footer>
     <div class="fixed-bottom text-light text-center">
-     @2023 OneUmmahList. All rights reserved.
+      @2023 OneUmmahList. All rights reserved.
     </div>
   </footer>
   <script src="loader.js"></script>

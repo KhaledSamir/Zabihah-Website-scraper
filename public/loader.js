@@ -1,15 +1,26 @@
 const submitBtn = document.getElementById('submitBtn');
 const spinner = document.getElementById('spinner');
+const growSpan = document.getElementById('growSpan')
+const btnSpan = document.getElementById('btnSpan')
+const cityTextBox = document.getElementById('city-textbox')
+let hideLoadingButton = true;
 function submit() {
-    const city = document
-        .getElementById('city-textbox')
-        .value;
+    const city = cityTextBox.value;
     const radius = document
         .getElementById('radius-select')
         .value
-    let url = `https://www.zabihah.com/search?r=${radius}&g=&l=${city}&k=&t=r`;
+    const businessType = document
+        .getElementById('business-select')
+        .value
+    const businessTypeText = document
+        .getElementById('business-select')
+        .selectedOptions[0]
+        .text;
+    let url = `https://www.zabihah.com/search?r=${radius}&g=&l=${city}&k=&t=${businessType}`;
     submitBtn.disabled = true;
-    spinner.hidden = false;
+
+    btnTextDiv.innerText = 'Loading ...'
+    growSpan.hidden = false;
     fetch('/url', {
         method: 'post',
         headers: {
@@ -18,37 +29,33 @@ function submit() {
         },
         body: JSON.stringify({url: url})
     }).then(data => {
-
         data
             .text()
             .then(value => {
-                console.log(`value is ${value}`)
                 const downloadUrl = window
                     .URL
                     .createObjectURL(new Blob([value]));
                 const link = document.createElement('a');
                 link.href = downloadUrl;
-                link.setAttribute('download', `${capitalizeFirstLetter(city)}_${radius}_Mile(s)_data.csv`);
+                link.setAttribute('download', `${capitalizeFirstLetter(city)}_${radius}Mile(s)_${businessTypeText}Data.csv`);
                 document
                     .body
                     .appendChild(link);
                 link.click();
                 submitBtn.disabled = false;
-                spinner.hidden = true;
+                growSpan.hidden = true;
+                btnTextDiv.innerText = 'Submit';
             })
 
     });
-
-    // console.log(data) data     .json()     .then(json => {         const link =
-    // document.createElement('a');        // let json = JSON.stringify(data.json())
-    //         blob = new Blob(json, {type: 'octet/stream'})         let downloadUrl
-    // = window             .URL             .createObjectURL(blob) link.href =
-    // downloadUrl         link.download = 'data.csv' link.click()   window
-    //    .URL .revokeObjectURL(url)     }) .then(d => { link.href = d;
-    // link.setAttribute('download', 'data.csv');     document  .body
-    // .appendChild(link); link.click();     console.log(d) });
-
 }
+
+function enableSubmitBtn() {
+    if (cityTextBox.value) {
+        submitBtn.disabled = false;
+    } else 
+        submitBtn.disabled = true;
+    }
 
 function capitalizeFirstLetter(string) {
     return string

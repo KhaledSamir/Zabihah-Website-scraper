@@ -1,13 +1,12 @@
 .content {
   display: table;
   position: fixed; /* or absolute */
-  top: 50%;
-  left: 25%;
+  top: 40%;
+  left: 20%;
 }
 
 .spinner {
   display: table;
   position: fixed; /* or absolute */
-  top: 50%;
-  right: 23%;
+  text-align: center;
 }
