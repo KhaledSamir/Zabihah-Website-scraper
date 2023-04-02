@@ -15,6 +15,6 @@ export default class CSVCreator {
     }
 
     createHeader() {
-        return 'Name, Address, Phone';
+        return 'Name, Address, Phone\n';
     }
 }
