@@ -27,10 +27,14 @@
             size="1"
             class="m-5 col-3 form-select"
           >
-            <option value="r" selected="">Restaurants</option>
-            <option value="m">Markets</option>
-            <option value="c">Caterers</option>
-            <option value="b">Businesses</option>
+            <option selected="">Restaurants</option>
+            <option>Markets</option>
+            <option>Caterers</option>
+            <option>Businesses</option>
+            <option>Mosques</option>
+            <option>Prayer Spaces</option>
+            <option>Schools</option>
+            <option>Organizations</option>
           </select>
         </div>
       </div>
@@ -52,8 +56,20 @@
             <option value="20">Within 20 mi</option>
           </select>
 
-          <button class="btn btn-primary" onclick="submit()" id="submitBtn" type="button" disabled>
-            <span id="growSpan" hidden="true" class="spinner-grow spinner-grow-sm" role="status" aria-hidden="true"></span>
+          <button
+            class="btn btn-primary"
+            onclick="submit()"
+            id="submitBtn"
+            type="button"
+            disabled
+          >
+            <span
+              id="growSpan"
+              hidden="true"
+              class="spinner-grow spinner-grow-sm"
+              role="status"
+              aria-hidden="true"
+            ></span>
             <div id="btnTextDiv" class="d-inline">Submit</div>
           </button>
         </div>

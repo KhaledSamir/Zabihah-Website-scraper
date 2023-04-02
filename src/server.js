@@ -3,9 +3,6 @@ import bodyParser from 'body-parser';
 import path from 'path';
 import {fileURLToPath} from 'url';
 import Parser from './parser.js'
-import axios from 'axios';
-import fs from 'fs'
-import * as blob from 'buffer';
 
 const __filename = fileURLToPath(import.meta.url);
 const __dirname = path.dirname(__filename);
@@ -29,24 +26,13 @@ app.get('/download', (req, res) => {
         .download(filePath, 'data.csv')
 });
 
-// res.download(filePath, (err) => {     console.log(err)     }) })
-app.post("/url", async(req, res) => {
-    let url = req.body.url;
-    const data = await parser.loadFromUrl(url)
-    // axios({url: `http://${req.headers.host}/download`, method: 'get', responseType: 'text/csv'}).then((r) => {
-    //     res.send(r.data)
-    //     file.destroy();
-    // })
-
-    res.send(data)
-
-    // axios.get(path.join(__dirname, '../public/data.csv')).then(data => {
-    // res.download(data) }); res.download(JSON.stringify(path.join(__dirname,
-    // '../public/data.csv'))) if (result) {     axios({url:
-    // 'http://localhost:3000/download', method: 'get', responseType:
-    // 'blob'}).then((response) => {        // const url = new
-    // blob.Blob([response.data])        // res.File(url) res.send(response.data) })
-    // res.send(`Hello from NodeJS!! You sent ${url}`)
+app.post("/parse", async(req, res) => {
+    let searchParameters = req.body.searchParameters;
+    const data = await parser.loadData(searchParameters);
+    if (!data) {
+        res.send("No data found. Please try to change city or radius.")
+    } else 
+        res.send(data)
 });
 
 app.listen(port, () => {

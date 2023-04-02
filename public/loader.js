@@ -9,25 +9,27 @@ function submit() {
     const radius = document
         .getElementById('radius-select')
         .value
-    const businessType = document
-        .getElementById('business-select')
-        .value
     const businessTypeText = document
         .getElementById('business-select')
         .selectedOptions[0]
         .text;
-    let url = `https://www.zabihah.com/search?r=${radius}&g=&l=${city}&k=&t=${businessType}`;
     submitBtn.disabled = true;
-
     btnTextDiv.innerText = 'Loading ...'
     growSpan.hidden = false;
-    fetch('/url', {
+    console.log(businessTypeText.replace(/\s+/g, ''))
+    fetch('/parse', {
         method: 'post',
         headers: {
             'Accept': 'application/json',
             'Content-Type': 'application/json'
         },
-        body: JSON.stringify({url: url})
+        body: JSON.stringify({
+            "searchParameters": {
+                query: businessTypeText.replace(/\s+/g, ''),
+                city: city,
+                radius: radius
+            }
+        })
     }).then(data => {
         data
             .text()
@@ -47,7 +49,7 @@ function submit() {
                 btnTextDiv.innerText = 'Submit';
             })
 
-    });
+    })
 }
 
 function enableSubmitBtn() {

@@ -2,43 +2,56 @@ import * as cheerio from "cheerio";
 import axios from "axios";
 import Business from "./models/business.js";
 import CSVCreator from "./csv-creator.js";
+import UrlBuilder from './url-builder.js'
+import {SiteType} from "../data/queryToBusinesses.js";
+import * as sites from '../data/sites.js';
 
 export default class Parser {
 
   csvCreator = new CSVCreator();
-  async loadFromUrl(url) {
-    const response = await axios(url);
-    const links = await this.getBusinessesLinks(response.data)
-    const businesses = await this.getBusinessesInformation(links)
+
+  async loadData(searchParameters) {
+    let urlBuilder = new UrlBuilder(searchParameters);
+    let type = urlBuilder.buildUrl(searchParameters);
+    const response = await axios(type.url);
+    const links = await this.extractLinks(response.data)
+    if (links.length == 0) 
+      return null;
+    const businesses = await this.parseBusinessesInformation(links, type.siteType);
     const data = await this
       .csvCreator
-      .createCSV(businesses)
+      .createCSV(businesses);
     return data;
   }
 
-  async getBusinessesInformation(links) {
-    const businessesArr = []
-    await Promise.all(links.map(async link => {
-      // axios.get(businesses[i].attribs.href)
-      const response = await axios.get(link)
-      const bizData = response.data;
-      let business = await this.createBiz(bizData);
-      businessesArr.push(business);
-    }))
-
-    return businessesArr
-  }
-
-  async getBusinessesLinks(pageResponse) {
+  async extractLinks(pageResponse) {
     let $ = cheerio.load(pageResponse);
     let businessesLinks = []
     $('div.titleBS > a', pageResponse).each((i, elm) => {
       const link = $(elm).attr('href')
       businessesLinks.push(link)
     })
-    if (businessesLinks.length == 0) 
-      throw("The url has no businesss")
     return businessesLinks;
+  }
+
+  async parseBusinessesInformation(links, siteType) {
+    const businessesArr = [];
+
+    const promises = links.map(async link => {
+      if (siteType == SiteType.Salatomatic) {
+        link = `${sites.salatomaticBaseUrl}//${link}`;
+      }
+      return await axios.get(link)
+    });
+
+    var responses = await Promise.all(promises);
+    for (const response of responses) {
+      const bizData = response.data;
+      let business = await this.createBiz(bizData);
+      businessesArr.push(business);
+    };
+
+    return businessesArr;
   }
 
   async createBiz(bizData) {
