@@ -5,14 +5,15 @@ import CSVCreator from "./csv-creator.js";
 import UrlBuilder from './url-builder.js'
 import {SiteType} from "../data/queryToBusinesses.js";
 import * as sites from '../data/sites.js';
+import { parseFragment } from "parse5";
 
 export default class Parser {
 
   csvCreator = new CSVCreator();
 
   async loadData(searchParameters) {
-    let urlBuilder = new UrlBuilder(searchParameters);
-    let type = urlBuilder.buildUrl(searchParameters);
+    const urlBuilder = new UrlBuilder(searchParameters);
+    const type = urlBuilder.buildUrl(searchParameters);
     const response = await axios(type.url);
     const links = await this.extractLinks(response.data)
     if (links.length == 0) 
@@ -25,8 +26,8 @@ export default class Parser {
   }
 
   async extractLinks(pageResponse) {
-    let $ = cheerio.load(pageResponse);
-    let businessesLinks = []
+    const $ = cheerio.load(pageResponse);
+    const businessesLinks = []
     $('div.titleBS > a', pageResponse).each((i, elm) => {
       const link = $(elm).attr('href')
       businessesLinks.push(link)
@@ -37,17 +38,16 @@ export default class Parser {
   async parseBusinessesInformation(links, siteType) {
     const businessesArr = [];
 
-    const promises = links.map(async link => {
+    const axiosInstances = links.map(async link => {
       if (siteType == SiteType.Salatomatic) {
         link = `${sites.salatomaticBaseUrl}//${link}`;
       }
       return await axios.get(link)
     });
 
-    var responses = await Promise.all(promises);
+    var responses = await axios.all(axiosInstances);
     for (const response of responses) {
-      const bizData = response.data;
-      let business = await this.createBiz(bizData);
+      const business = await this.createBiz(response.data);
       businessesArr.push(business);
     };
 
@@ -55,7 +55,7 @@ export default class Parser {
   }
 
   async createBiz(bizData) {
-    let $ = cheerio.load(bizData);
+    const $ = cheerio.load(bizData);
     const bizName = $('.titleBL').text()
     const address = $('.bodyLink')
       .first()

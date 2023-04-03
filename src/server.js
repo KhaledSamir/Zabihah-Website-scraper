@@ -27,7 +27,7 @@ app.get('/download', (req, res) => {
 });
 
 app.post("/parse", async(req, res) => {
-    let searchParameters = req.body.searchParameters;
+    const searchParameters = req.body.searchParameters;
     const data = await parser.loadData(searchParameters);
     if (!data) {
         res.send("No data found. Please try to change city or radius.")
