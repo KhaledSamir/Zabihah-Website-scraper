@@ -5,7 +5,6 @@ import CSVCreator from "./csv-creator.js";
 import UrlBuilder from './url-builder.js'
 import {SiteType} from "../data/queryToBusinesses.js";
 import * as sites from '../data/sites.js';
-import { parseFragment } from "parse5";
 
 export default class Parser {
 

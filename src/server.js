@@ -17,15 +17,6 @@ app.get('/', (req, res) => {
     res.sendFile(path.join(__dirname, '../index.html'))
 });
 
-app.get('/download', (req, res) => {
-    const filePath = path.join(__dirname, '../public/data.csv'); //
-    res.setHeader('Content-Type', 'text/csv'); //
-    res.setHeader('Content-Disposition', 'attachment;filename=data.csv')
-    res
-        .status(200)
-        .download(filePath, 'data.csv')
-});
-
 app.post("/parse", async(req, res) => {
     const searchParameters = req.body.searchParameters;
     const data = await parser.loadData(searchParameters);
