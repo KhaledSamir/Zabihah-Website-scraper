@@ -16,7 +16,6 @@ function submit() {
     submitBtn.disabled = true;
     btnTextDiv.innerText = 'Loading ...'
     growSpan.hidden = false;
-    console.log(businessTypeText.replace(/\s+/g, ''))
     fetch('/parse', {
         method: 'post',
         headers: {

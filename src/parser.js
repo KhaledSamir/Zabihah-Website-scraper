@@ -9,6 +9,7 @@ import * as sites from '../data/sites.js';
 export default class Parser {
 
   csvCreator = new CSVCreator();
+  addressRegex = /^(\d+\s+)?(.*?),\s+([^,]+),\s+([A-Z]{2})\s+(\d{5})(?:-\d{4})?(?:\s+(?:UNIT|APT)\s*([\w-]+))?$/i;
 
   async loadData(searchParameters) {
     const urlBuilder = new UrlBuilder(searchParameters);
@@ -62,7 +63,31 @@ export default class Parser {
     const phone = $('td[valign="middle"] > div.midLink')
       .first()
       .text();
-    let business = new Business(bizName, address, phone)
+    const addressDetails = await this.getAddressDetails(address);
+    let business = new Business(bizName, address, addressDetails, phone)
     return business;
+  }
+
+  getAddressDetails(address) {
+    const addressMatch = address.match(this.addressRegex);
+    if (!addressMatch) {
+      throw new Error("Address is not formatted correctly");
+    }
+
+    const [,
+      streetNumber,
+      streetName,
+      cityWithUnit,
+      state,
+      zipCode,
+      unit] = addressMatch;
+    const cityIndex = cityWithUnit.lastIndexOf(",");
+    const city = cityWithUnit
+      .substring(cityIndex + 1)
+      .trim();
+
+    const street = `${streetNumber || ""}${streetName}`;
+
+    return {street, city, state, zipCode};
   }
 }

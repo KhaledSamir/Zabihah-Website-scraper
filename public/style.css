@@ -1,8 +1,18 @@
-.content {
-  display: table;
-  position: fixed; /* or absolute */
-  top: 40%;
-  left: 20%;
+.centered {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  height: calc(100vh - 200px);
+}
+
+.header-image {
+  height: 50px;
+  margin-right: 20px;
+}
+
+.header-title {
+  padding-top: 8px;
+  color: var(--bs-body-color);
 }
 
 .spinner {

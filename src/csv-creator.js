@@ -15,6 +15,6 @@ export default class CSVCreator {
     }
 
     createHeader() {
-        return 'Name, Address, Phone\n';
+        return 'Listing Title, Listing Address, Listing Country, Listing State, Listing City, Listing Postal Code, Listing Phone\n';
     }
 }
