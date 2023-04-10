@@ -6,12 +6,13 @@
 }
 
 .header-image {
-  height: 70px;
-  margin-right: 20px;
+  height: 55px;
+  margin-right: 10px;
 }
 
 .header-title {
-  padding-top: 8px;
+  margin-top: 7px;
+  align-items: baseline;
   color: rgb(68, 68, 68)
 }
 
